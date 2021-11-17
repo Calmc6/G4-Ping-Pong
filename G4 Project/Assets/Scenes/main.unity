@@ -574,6 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameOverScreen: {fileID: 2075479616}
   livesText: {fileID: 226968705}
+  ownerID: 1
 --- !u!1 &483430005
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,8 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2802b0552ee174e83169ceda414e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrust: 50
-  ownerID: 0
+  thrust: 250
 --- !u!50 &577972328
 Rigidbody2D:
   serializedVersion: 4
@@ -1500,6 +1500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameOverScreen: {fileID: 2075479616}
   livesText: {fileID: 2091925446}
+  ownerID: 2
 --- !u!1001 &1733634971
 PrefabInstance:
   m_ObjectHideFlags: 0
