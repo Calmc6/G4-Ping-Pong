@@ -11,6 +11,9 @@ public class ScoreKeeper : MonoBehaviour
     [SerializeField]
     private Text livesText;
 
+    [SerializeField]
+    private int ownerID;
+
     private int lives;
     
     // Start is called before the first frame update
@@ -26,7 +29,7 @@ public class ScoreKeeper : MonoBehaviour
         {
             lives--;
             livesText.text = lives.ToString();
-            col.gameObject.GetComponent<BallController>().ResetBall();
+            col.gameObject.GetComponent<BallController>().ResetBall(ownerID);
         }
 
         if (lives == 0)
