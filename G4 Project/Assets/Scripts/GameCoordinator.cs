@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // This class is responsible for coordinating all vital gameplay classes
 // while the game is running.
@@ -35,15 +36,20 @@ public class GameCoordinator : MonoBehaviour
     // Power-Up Frequency
     public float powerUpRandomVal;
 
+    // Player names
+    public string[] playerNames = new string[] {"Player 1", "Player 2"};
+
     // Bool to track if the game is currently running
     [HideInInspector]
     public bool gameActive = false;
+
+    [SerializeField] private Text winner;
 
     // Does all required actions for the game to properly start
     public void OnGameStart()
     {
         // Set difficulty to 0 (beginner) for now.
-        difficulty = 0;
+        difficulty = ImportantData.powerupFreq;
         if (difficulty == 0)
         {
             ballThrust = 500;
@@ -54,6 +60,8 @@ public class GameCoordinator : MonoBehaviour
             ballThrust = 600;
             powerUpRandomVal = 0.125f;
         }
+
+        playerNames = new string [] {ImportantData.player1Name, ImportantData.player2Name};
 
         GenerateBlocks();
         GenerateBall(0);
@@ -75,8 +83,8 @@ public class GameCoordinator : MonoBehaviour
         */
     }
 
-    // Game Over
-    public void GameOver()
+    // Game Over (the ownerID is for the player who lost)
+    public void GameOver(int ownerID)
     {
         gameActive = false;
 
@@ -88,6 +96,20 @@ public class GameCoordinator : MonoBehaviour
         activeBalls.Clear();
         activeBallsP1.Clear();
         activeBallsP2.Clear();
+
+        Leaderboard leaderboard = Leaderboard.LoadRecords();
+        int winnerScore = GetScoreKeeper(1 - ownerID).GetScore();
+        string winnerName = playerNames[1 - ownerID];
+        ImportantData.winnerName = winnerName;
+
+        if (leaderboard.IsTopRecord(winnerScore))
+        {
+            Record newRecord = new Record(winnerScore, winnerName);
+            leaderboard.AddRecord(newRecord);
+            leaderboard.SaveRecords();
+        }
+
+        SceneManager.LoadScene("Win");
     }
 
     // Generate a new ball. If ownerID = 0, the ball is generated in front of player 1.

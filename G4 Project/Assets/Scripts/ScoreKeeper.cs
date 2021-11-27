@@ -32,7 +32,7 @@ public class ScoreKeeper : MonoBehaviour
         coordinator = FindObjectOfType<GameCoordinator>();
 
         lives = 5;
-        livesText.text = lives.ToString();
+        livesText.text = "Lives: " + lives.ToString();
 
         score = 0;
 
@@ -44,7 +44,7 @@ public class ScoreKeeper : MonoBehaviour
         {
             if (!debugToggle)
                 lives--;
-            livesText.text = lives.ToString();
+            livesText.text = "Lives: " + lives.ToString();
 
             int ownerID = col.gameObject.GetComponent<BallController>().originID;
             
@@ -118,7 +118,7 @@ public class ScoreKeeper : MonoBehaviour
         keeper.AddScore(1000);
     }
 
-    public int getOwnerID()
+    public int GetOwnerID()
     {
         return ownerID;
     }
@@ -126,7 +126,12 @@ public class ScoreKeeper : MonoBehaviour
     public void StartGame()
     {
         lives = 5;
-        livesText.text = lives.ToString();
+        livesText.text = "Lives: " + lives.ToString();
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 
     // This function adds points to the player's score.
@@ -134,6 +139,7 @@ public class ScoreKeeper : MonoBehaviour
     // should terminate.
     private void AddScore(int points)
     {
+        // Check for overflow
         if (score + points < 0)
         {
             EndGame();
@@ -147,9 +153,9 @@ public class ScoreKeeper : MonoBehaviour
 
     private void EndGame()
     {
-        coordinator.GameOver();
+        coordinator.GameOver(ownerID);
         coordinator.gameActive = false;
         //col.gameObject.SetActive(false);
-        GameOverScreen.SetActive(true);
+        //GameOverScreen.SetActive(true);
     }
 }
